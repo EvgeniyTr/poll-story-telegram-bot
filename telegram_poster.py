@@ -7,14 +7,18 @@ from pathlib import Path
 import logging # <-- Add logging
 from openai import OpenAI, OpenAIError # <-- Add OpenAI imports
 import random # <-- Add random import
+from dotenv import load_dotenv
+load_dotenv()
 
 # --- Logging Setup --- # <-- Add this section
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 # --- Configuration ---
 # !! IMPORTANT: Replace placeholders below with your actual values !!
-BOT_TOKEN = "xxxx"  # <-- PASTE YOUR BOT TOKEN HERE
-CHANNEL_ID = "@denissexy" # Or "-100xxxxxxxxxx" for private channels/groups
+# BOT_TOKEN = "xxxx"  # <-- PASTE YOUR BOT TOKEN HERE
+# CHANNEL_ID = "@denissexy" # Or "-100xxxxxxxxxx" for private channels/groups
+BOT_TOKEN = os.getenv("BOT_TOKEN")
+CHANNEL_ID = os.getenv("CHANNEL_ID")
 # Use environment variable for API key, fallback to placeholder
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "xxxx") # <-- Modify/Add
 OPENAI_BASE_URL = os.getenv("OPENAI_BASE_URL") # <-- Add OPENAI_BASE_URL
