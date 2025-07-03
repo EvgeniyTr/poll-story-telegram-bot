@@ -1,5 +1,11 @@
 # Используем официальный образ Python как базовый
-FROM python:3.11-slim
+FROM python:3.11-slim-bookworm
+
+# Ensure all system packages are up-to-date to minimize vulnerabilities
+RUN apt-get update && apt-get dist-upgrade -y && apt-get clean && rm -rf /var/lib/apt/lists/*
+
+# Upgrade system packages to reduce vulnerabilities
+RUN apt-get update && apt-get upgrade -y && rm -rf /var/lib/apt/lists/*
 
 # Устанавливаем рабочую директорию
 WORKDIR /app
@@ -17,17 +23,10 @@ RUN if [ ! -f .env ]; then cp example.env .env; fi
 # Устанавливаем cron
 RUN apt-get update && apt-get install -y cron && rm -rf /var/lib/apt/lists/*
 
-# Копируем crontab файл
-COPY crontab /etc/cron.d/telegram_poster_cron
+# Копируем шаблон crontab и entrypoint
+COPY crontab.template /app/crontab.template
+COPY entrypoint.sh /app/entrypoint.sh
+RUN chmod +x /app/entrypoint.sh
 
-# Даем права на выполнение cron файла
-RUN chmod 0644 /etc/cron.d/telegram_poster_cron
-
-# Добавляем логи
-RUN touch /var/log/telegram_poster.log
-
-# Применяем cron задания
-RUN crontab /etc/cron.d/telegram_poster_cron
-
-# Запускаем cron в форграунде
-CMD ["cron", "-f"]
+# Запуск через entrypoint
+ENTRYPOINT ["/app/entrypoint.sh"]

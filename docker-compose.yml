@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  telegram_poster:
+    build: .
+    container_name: telegram_poster
+    restart: unless-stopped
+    environment:
+      - TZ=Europe/Moscow
+      - CRON_SCHEDULE=*/30 * * * *
+    volumes:
+      - ./example.env:/app/.env:ro
+      - ./logs:/var/log
+    # Если нужно пробросить порты, раскомментируйте следующую строку
+    # ports:
+    #   - "8080:8080"
