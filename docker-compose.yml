@@ -9,7 +9,7 @@ services:
       - TZ=Europe/Moscow
       - CRON_SCHEDULE=*/30 * * * *
     volumes:
-      - ./example.env:/app/.env:ro
+      - ./.env:/app/.env:ro
       - ./logs:/var/log
     # Если нужно пробросить порты, раскомментируйте следующую строку
     # ports:
