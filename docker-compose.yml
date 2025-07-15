@@ -8,6 +8,9 @@ services:
     environment:
       - TZ=Europe/Moscow
       - CRON_SCHEDULE=*/30 * * * *
+      #- HTTP_PROXY=
+      #- HTTPS_PROXY=
+      #- NO_PROXY=localhost,127.0.0.1
     volumes:
       - ./.env:/app/.env:ro
       - ./logs:/var/log
