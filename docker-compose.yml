@@ -7,7 +7,7 @@ services:
     restart: unless-stopped
     environment:
       - TZ=Europe/Moscow
-      - CRON_SCHEDULE=*/30 * * * *
+      - CRON_SCHEDULE=0 10,15 * * *
       #- HTTP_PROXY=
       #- HTTPS_PROXY=
       #- NO_PROXY=localhost,127.0.0.1
