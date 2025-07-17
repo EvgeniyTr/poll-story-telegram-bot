@@ -1,1 +1,0 @@
-*/30 * * * * cd /app && /usr/local/bin/python telegram_poster.py >> /var/log/telegram_poster.log 2>&1

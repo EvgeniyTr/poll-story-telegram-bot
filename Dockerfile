@@ -18,13 +18,12 @@ RUN pip install --no-cache-dir --upgrade pip \
     && pip install --no-cache-dir -r requirements.txt
 
 # Копируем пример env, если .env не существует
-RUN if [ ! -f .env ]; then cp example.env .env; fi
+# RUN if [ ! -f .env ]; then cp example.env .env; fi
 
 # Устанавливаем cron
 RUN apt-get update && apt-get install -y cron && rm -rf /var/lib/apt/lists/*
 
-# Копируем шаблон crontab и entrypoint
-COPY crontab.template /app/crontab.template
+COPY crontab /app/crontab
 COPY entrypoint.sh /app/entrypoint.sh
 RUN chmod +x /app/entrypoint.sh
 

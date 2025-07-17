@@ -13,7 +13,8 @@ services:
       #- NO_PROXY=localhost,127.0.0.1
     volumes:
       - ./.env:/app/.env:ro
-      - ./logs:/var/log
+      - ./logs/telegram_poster.log:/var/log/telegram_poster.log
+      - ./story_state.json:/app/story_state.json
     # Если нужно пробросить порты, раскомментируйте следующую строку
     # ports:
     #   - "8080:8080"
