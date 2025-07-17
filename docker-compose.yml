@@ -10,7 +10,7 @@ services:
       - CRON_SCHEDULE=0 10,15 * * *
       #- HTTP_PROXY=
       #- HTTPS_PROXY=
-      #- NO_PROXY=localhost,127.0.0.1
+      #- NO_PROXY=localhost,127.0.0.1,api.telegram.org
     volumes:
       - ./.env:/app/.env:ro
       - ./logs/telegram_poster.log:/var/log/telegram_poster.log
