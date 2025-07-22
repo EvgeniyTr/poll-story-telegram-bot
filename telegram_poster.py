@@ -49,15 +49,20 @@ MAX_CONTEXT_CHARS = 15000 # Approximate limit to avoid huge API requests (adjust
 
 # --- OpenAI Client Initialization --- # <-- Add this section
 openai_client = None
+import httpx
 if OPENAI_API_KEY and OPENAI_API_KEY != "YOUR_OPENAI_API_KEY":
     try:
-        # Ensure you have set the OPENAI_API_KEY environment variable
-        # or replace the placeholder directly above (less secure)
-        openai_client = OpenAI(api_key=OPENAI_API_KEY, base_url=OPENAI_BASE_URL) # Modified line
-        logging.info("OpenAI client initialized successfully.")
+        # Явно передаем proxy для httpx
+        proxies = {
+            "http://": os.environ.get("HTTP_PROXY"),
+            "https://": os.environ.get("HTTPS_PROXY"),
+        }
+        http_client = httpx.Client(proxies=proxies)
+        openai_client = OpenAI(api_key=OPENAI_API_KEY, base_url=OPENAI_BASE_URL, http_client=http_client)
+        logging.info("OpenAI client initialized successfully with explicit proxy.")
     except Exception as e:
-         logging.error(f"Failed to initialize OpenAI client: {e}")
-         # openai_client remains None
+        logging.error(f"Failed to initialize OpenAI client: {e}")
+        # openai_client remains None
 else:
     logging.warning("OPENAI_API_KEY not found or is placeholder. LLM features will be disabled.")
 
