@@ -52,19 +52,26 @@ openai_client = None
 import httpx
 if OPENAI_API_KEY and OPENAI_API_KEY != "YOUR_OPENAI_API_KEY":
     try:
-        # Явно передаем proxy для httpx
-        proxies = {
-            "http://": os.environ.get("HTTP_PROXY"),
-            "https://": os.environ.get("HTTPS_PROXY"),
-        }
-        http_client = httpx.Client(proxies=proxies)
+        http_proxy = os.environ.get("HTTP_PROXY")
+        https_proxy = os.environ.get("HTTPS_PROXY")
+        proxies = {}
+        if http_proxy:
+            proxies["http://"] = http_proxy
+        if https_proxy:
+            proxies["https://"] = https_proxy
+        if proxies:
+            http_client = httpx.Client(proxies=proxies)
+            logging.info(f"OpenAI httpx.Client initialized with proxies: {proxies}")
+        else:
+            http_client = httpx.Client()
+            logging.info("OpenAI httpx.Client initialized without proxies (no proxy env detected)")
         openai_client = OpenAI(api_key=OPENAI_API_KEY, base_url=OPENAI_BASE_URL, http_client=http_client)
-        logging.info("OpenAI client initialized successfully with explicit proxy.")
+        logging.info("OpenAI client initialized successfully.")
     except Exception as e:
         logging.error(f"Failed to initialize OpenAI client: {e}")
         # openai_client remains None
 else:
-    logging.warning("OPENAI_API_KEY not found or is placeholder. LLM features will be disabled.")
+    logging.warning("OPENAI_API_KEY not found или is placeholder. LLM features will be disabled.")
 
 
 # --- State Management --- #
